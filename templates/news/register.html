@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="mt-8">
+    <div class="p-4 mt-8 text-center">
+      <h1 class="text-center mt-8 p-4">REGISTER WITH US</h1>
+    </div>
+  </div>
+  <h3 class="text-center mt-4">REGISTER WITH US</h3>
+  <div class="container w-75">
+    
+    {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message | safe }}
+    </div>
+{% endfor %}
+  </div>
+  <div class="container w-75 mb-4">
+    <form method="post" enctype="multipart/form-data" class="shadow-lg p-4 mt-5 bg-white rounded">
+        {% csrf_token %}
+      <div class="mb-6">
+       {{ user_form.username|as_crispy_field }}
+    
+      </div>
+      <div class="mb-3">
+        {{ user_form.email|as_crispy_field }}
+        
+        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+      </div>
+     
+      <div class="mb-3">
+        {{ user_form.first_name|as_crispy_field }}
+      </div>
+      <div class="mb-3">
+        {{ user_form.last_name|as_crispy_field }}
+      </div>
+      
+      <div class="mb-3">
+        {{ user_form.password|as_crispy_field }}
+      </div>
+      <div class="mb-3">
+        {{ user_form.password2|as_crispy_field }}
+      </div>
+      <div class="mb-3">
+        {{ user_form.image|as_crispy_field }}
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+
+
+
+
+{% endblock content %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+
+{% load static %}
+
+
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+<script src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script src="{% static 'ckeditor/ckeditor.js' %}"></script>
+<link rel="stylesheet" href="{% static 'ckeditor/contents.css' %}">
+
+<div class="mt-4 p-4">
+    <div class="container mx-auto mt-4 p-4">
+        <form method="post" class="shadow-lg p-4 mt-5 bg-white rounded" enctype="multipart/form-data">
+            {% csrf_token %}
+        {{ form_post|crispy }}
+        {{ form_post.media }}
+        <button type="submit" class="btn btn-primary mt-4">SUBMIT POST</button>
+        </form>
+    </div>
+</div>
+    
+{% endblock content %}

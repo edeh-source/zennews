@@ -1,0 +1,376 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+
+
+{% block content %}
+
+
+
+
+<!-- ======= Header ======= -->
+
+<main id="main">
+
+    <!-- ======= Hero Slider Section ======= -->
+    <section id="hero-slider" class="hero-slider">
+        <div class="container-md" data-aos="fade-in">
+            <div class="row">
+                <div class="col-12">
+                    <div class="swiper sliderFeaturedPosts">
+                        <div class="swiper-wrapper">
+                            {% for posts in object_list %}
+                            <div class="swiper-slide">
+                                <a href="{{ posts.get_absolute_url }}" class="img-bg d-flex align-items-end" style="background-image: url({{posts.image.url }});">
+                                    <div class="img-bg-inner">
+                                        <h2>{{ posts.name }}</h2>
+                                        <p>{{ posts.text|truncatewords:20|striptags }}</p>
+                                    </div>
+                                </a>
+                            </div>
+                            {% endfor %}
+
+
+
+
+
+
+                        </div>
+                        <div class="custom-swiper-button-next">
+                            <span class="bi-chevron-right"></span>
+                        </div>
+                        <div class="custom-swiper-button-prev">
+                            <span class="bi-chevron-left"></span>
+                        </div>
+
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Hero Slider Section -->
+
+    <!-- ======= Post Grid Section ======= -->
+    <section id="posts" class="posts">
+        <div class="container" data-aos="fade-up">
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    {% for culture in post_culture %}
+                    <div class="post-entry-1 lg">
+                        <a href="{{ culture.get_absolute_url }}"><img src="{{ culture.image.url }}" alt="" class="img-fluid"></a>
+                        <div class="post-meta"><span class="date">{{ culture.category.name }}</span> <span class="mx-1">&bullet;</span> <span>{{ culture.created|timesince }} ago</span></div>
+                        <h2><a href="{{ culture.get_absolute_url }}">{{ culture.name }}</a></h2>
+                        <p class="mb-4 d-block">{{ culture.text|safe|truncatewords:40 }}</p>
+
+                        <div class="d-flex align-items-center author">
+                            <a href="{% url 'authors_posts' culture.author.user %}"><div class="photo"><img src="{{ culture.author.user.image.url }}"  alt="" class="img-fluid"></div></a>
+                            <div class="name">
+                                <a href="{% url 'authors_posts' culture.author.user %}"><h3 class="m-0 p-0">{{ culture.author }}</h3></a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="row g-5">
+                        {% for posts in all_post %}
+                        <div class="col-lg-4 border-start custom-border">
+                            <div class="post-entry-1">
+                                <a href="{{ posts.get_absolute_url }}"><img src="{{ posts.image.url }}" alt="" class="img-fluid"></a>
+                                <div class="post-meta"><span class="date">{{ posts.category.name }}</span> <span class="mx-1">&bullet;</span> <span>{{ posts.created|timesince }} ago</span></div>
+                                <h2><a href="{{ posts.get_absolute_url }}">{{ posts.name }}</a></h2>
+                            </div>
+                            
+                        </div>
+                        {% endfor %}
+                        
+
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- End .row -->
+        </div>
+    </section>
+    <!-- End Post Grid Section -->
+    
+    <section id="posts" class="posts">
+        <div class="container" data-aos="fade-up">
+            <div class="section-header d-flex justify-content-between align-items-center mb-5">
+                <h2>{{ trend_category.name  }}</h2>
+                <div><a href="{% url 'category_details' trend_category.slug %}" class="more">See All {{ trend_category.name }}</a></div>
+            </div>
+            <div class="row g-5">
+                {% for posts_trend in post_trend %}
+                <div class="col-lg-4">
+                    <div class="post-entry-1 lg">
+                        <a href="single-post.html"><img src="{{ posts_trend.image.url }}" alt="" class="img-fluid"></a>
+                        <div class="post-meta"><span class="date">{{ posts_trend.category.name }}</span> <span class="mx-1">&bullet;</span> <span>{{ posts_trend.created|timesince }} ago</span></div>
+                        <h2><a href="{{ posts_trend.get_absolute_url }}">{{ posts_trend.name }}</a></h2>
+                        <p class="mb-4 d-block">{{ posts_trend.text|safe|truncatewords:40 }}</p>
+
+                        <div class="d-flex align-items-center author">
+                            <a href="{% url 'authors_posts' posts_trend.author.user.username %}"><div class="photo"><img src="{{ posts_trend.author.user.image.url }}" alt="" class="img-fluid"></div></a>
+                            <div class="name">
+                                <h3 class="m-0 p-0">{{ posts_trend.author }}</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                {% endfor %}
+
+
+                
+
+
+                <div class="col-lg-8">
+                    <div class="row g-5">
+                        {% for all_trends in all_trend_post %}
+                        <div class="col-lg-4 border-start custom-border">
+                            <div class="post-entry-1">
+                                <a href="{{ all_trends.get_absolute_url }}"><img src="{{ all_trends.image.url }}" alt="" class="img-fluid"></a>
+                                <div class="post-meta"><span class="date">{{ all_trends.category.name }}</span> <span class="mx-1">&bullet;</span> <span>{{ all_trends.created|timesince }} ago</span></div>
+                                <h2><a href="{{ all_trends.get_absolute_url }}">{{ all_trends.name }}</a></h2>
+                            </div>
+                           
+                            
+                        </div>
+                        {% endfor %}
+                        
+                       
+
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- End .row -->
+        </div>
+    </section>
+    <!-- End Post Grid Section -->
+
+
+        <!-- ======= Business Category Section ======= -->
+
+            
+    <section id="posts" class="posts">
+        <div class="container" data-aos="fade-up">
+            <div class="section-header d-flex justify-content-between align-items-center mb-5">
+                <h2>{{ buisness_category.name }}</h2>
+                <div><a href="{% url 'category_details' buisness_category.slug %}" class="more">See All {{ buisness_category.name }}</a></div>
+            </div>
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    {% for buisness in buisness_trend %}
+                    <div class="post-entry-1 lg">
+                        <a href="{{ buisness.get_absolute_url }}"><img src="{{ buisness.image.url }}" alt="" class="img-fluid"></a>
+                        <div class="post-meta"><span class="date">{{ buisness.category.name }}</span> <span class="mx-1">&bullet;</span> <span>{{ buisness.created|timesince }} ago</span></div>
+                        <h2><a href="{{ buisness.get_absolute_url }}">{{ buisness.name }}</a></h2>
+                        <p class="mb-4 d-block">{{ buisness.text|safe|truncatewords:40 }}</p>
+
+                        <div class="d-flex align-items-center author">
+                            <a href="{% url 'authors_posts' buisness.author.user %}"><div class="photo"><img src="{{ buisness.author.user.image.url }}" alt="" class="img-fluid"></div></a>
+                            <div class="name">
+                                <h3 class="m-0 p-0">{{ buisness.author.user }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="row g-5">
+                        {% for all_buisness in all_buisness_post%}
+                        <div class="col-lg-4 border-start custom-border">
+                            <div class="post-entry-1">
+                                <a href="{{ all_buisness.get_absolute_url }}"><img src="{{ all_buisness.image.url }}" alt="" class="img-fluid"></a>
+                                <div class="post-meta"><span class="date">{{ all_buisness.category.name }}</span> <span class="mx-1">&bullet;</span> <span>{{ all_buisness.created|timesince }} ago </span></div>
+                                <h2><a href="{{ all_buisness.get_absolute_url }}">{{ all_buisness.name }}</a></h2>
+                            </div>
+                        </div>    
+                        {% endfor %}
+                        
+
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- End .row -->
+        </div>
+    </section>
+        <!-- End Business Category Section -->
+
+    <!-- ======= Lifestyle Category Section ======= -->
+        
+    <section id="posts" class="posts">
+        <div class="container" data-aos="fade-up">
+            <div class="section-header d-flex justify-content-between align-items-center mb-5">
+                <h2>{{ sports_category.name }}</h2>
+                <div><a href="{% url 'category_details' sports_category.slug %}" class="more">See All {{ sports_category.name }}</a></div>
+            </div>
+            <div class="row g-5">
+                {% for sports in sports_trend %}
+                <div class="col-lg-4">
+                    <div class="post-entry-1 lg">
+                        <a href="{{ sports.get_absolute_url }}"><img src="{{ sports.image.url }}" alt="" class="img-fluid"></a>
+                        <div class="post-meta"><span class="date">{{ sports.category.name }}</span> <span class="mx-1">&bullet;</span> <span>{{ sports.created|timesince }} ago</span></div>
+                        <h2><a href="{{ sports.get_absolute_url }}">{{ sports.name }}</a></h2>
+                        <p class="mb-4 d-block">{{ sports.text|safe|truncatewords:40 }}</p>
+
+                        <div class="d-flex align-items-center author">
+                            <a href="{% url 'authors_posts' sports.author.user %}"><div class="photo"><img src="{{ sports.author.user.image.url }}" alt="" class="img-fluid"></div></a>
+                            <div class="name">
+                                <h3 class="m-0 p-0">{{ sports.author }}</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                {% endfor %}
+
+                <div class="col-lg-8">
+                    <div class="row g-5">
+                        {% for all_sports in all_sports_post %}
+                        <div class="col-lg-4 border-start custom-border">
+                            <div class="post-entry-1">
+                                <a href="{{ all_sports.get_absolute_url }}"><img src="{{ all_sports.image.url }}" alt="" class="img-fluid"></a>
+                                <div class="post-meta"><span class="date">{{ all_sports.category.name }}</span> <span class="mx-1">&bullet;</span> <span>{{ all_sports.created|timesince }} ago</span></div>
+                                <h2><a href="{{ all_sports.get_absolute_url }}">{{ all_sports.name }}</a></h2>
+                            </div>
+                           
+                        </div>
+                        {% endfor %}
+                        
+
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- End .row -->
+        </div>
+    </section>
+        <!-- End Lifestyle Category Section -->
+        <!--foreign news-->
+            
+        <section id="posts" class="posts">
+            <div class="container" data-aos="fade-up">
+                <div class="section-header d-flex justify-content-between align-items-center mb-5">
+                    <h2>{{ one_international_category.name }}</h2>
+                    <div><a href="{% url 'category_details' one_international_category.slug %}" class="more">See All {{ one_international_category.name }}</a></div>
+                </div>
+                <div class="row g-5">
+                    {% for international in post_international %}
+                    <div class="col-lg-4">
+                        <div class="post-entry-1 lg">
+                            <a href="{{ international.get_absolute_url }}"><img src="{{ international.image.url }}" alt="" class="img-fluid"></a>
+                            <div class="post-meta"><span class="date">{{ international.category.name }}</span> <span class="mx-1">&bullet;</span>{{ international.created| timesince}} ago <span></span></div>
+                            <h2><a href="{{ international.get_absolute_url }}">{{ international.name }}</a></h2>
+                            <p class="mb-4 d-block">{{ international.text|safe|truncatewords:40 }}</p>
+    
+                            <div class="d-flex align-items-center author">
+                                <a href=""><div class="photo"><img src="{{ international.author.user.image.url }}" alt="" class="img-fluid"></div></a>
+                                <div class="name">
+                                    <h3 class="m-0 p-0">{{ international.author }}</h3>
+                                </div>
+                            </div>
+                        </div>
+    
+                    </div>
+                    {% endfor %}
+    
+                    <div class="col-lg-8">
+                        <div class="row g-5">
+                            {% for post_internal in all_international %}
+                            <div class="col-lg-4 border-start custom-border">
+                                <div class="post-entry-1">
+                                    <a href="{{ post_internal.get_absolute_url }}"><img src="{{ post_internal.image.url }}" alt="" class="img-fluid"></a>
+                                    <div class="post-meta"><span class="date">{{ post_internal.category.name }}</span> <span class="mx-1">&bullet;</span> <span>{{ post_internal.created|timesince }} ago</span></div>
+                                    <h2><a href="{{ post_internal.get_absolute_url }}">{{ post_internal.name }}</a></h2>
+                                </div>
+                                
+                               
+                            </div>
+                            {% endfor %}
+                            
+
+                            
+    
+    
+                        </div>
+                    </div>
+    
+                </div>
+                <!-- End .row -->
+            </div>
+        </section>
+        <!--end foreign news-->
+            
+    <section id="posts" class="posts">
+        <div class="container" data-aos="fade-up">
+            <div class="section-header d-flex justify-content-between align-items-center mb-5">
+                <h2>{{ health_category.name }}</h2>
+                <div><a href="{% url 'category_details' health_category.slug %}" class="more">See All {{ health_category.name }}</a></div>
+            </div>
+            <div class="row g-5">
+                {% for health in post_health %}
+                <div class="col-lg-4">
+                    <div class="post-entry-1 lg">
+                        <a href="{{ health.get_absolute_url }}"><img src="{{ health.image.url }}" alt="" class="img-fluid"></a>
+                        <div class="post-meta"><span class="date">{{ health.category.name }}</span> <span class="mx-1">&bullet;</span> <span>{{ health.created|timesince }} ago</span></div>
+                        <h2><a href="{{ health.get_absolute_url }}">{{ health.name }}</a></h2>
+                        <p class="mb-4 d-block">{{ health.text|safe|truncatewords:40 }}</p>
+
+                        <div class="d-flex align-items-center author">
+                            <div class="photo"><img src="{{ health.author.user.image.url }}" alt="" class="img-fluid"></div>
+                            <div class="name">
+                                <h3 class="m-0 p-0">{{ health.author }}</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                {% endfor %}
+
+                <div class="col-lg-8">
+                    <div class="row g-5">
+                        {% for all_health in all_health_post %}
+                        <div class="col-lg-4 border-start custom-border">
+                            <div class="post-entry-1">
+                                <a href="{{ all_health.get_absolute_url }}"><img src="{{ all_health.image.url }}" alt="" class="img-fluid"></a>
+                                <div class="post-meta"><span class="date">{{ all_health.category.name }}</span> <span class="mx-1">&bullet;</span> <span>{{ all_health.created|timesince }} ago</span></div>
+                                <h2><a href="single-post.html">{{ all_health.name }}</a></h2>
+                            </div>
+                        </div>    
+                            {% endfor %}
+                            
+                            
+                        
+                       
+                            
+                        
+                            
+                        
+
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- End .row -->
+        </div>
+    </section>
+        <!--end foreign news-->
+
+</main>
+<!-- End #main -->
+
+<!-- ======= Footer ======= -->
+{% endblock content %}

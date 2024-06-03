@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %}
+    My Post
+{% endblock title %}
+
+
+
+{% block content %}
+<div class="mt-4 p-4">
+<div class="mt-4 p-4">
+<h1 class="text-center mt-4 p-8"> MY POSTS </h1>
+<div class="text-center mx-auto mt-4">
+<a href="{% url 'create_post' %}" class="btn btn-primary mt-4">CREATE POST</a>
+</div>
+</div>
+</div>
+
+<div class="container mt-4 p-4">
+    <div class="row gy-4">
+        {% for post in object_list %}
+        <div class="col-lg-4">
+            
+            <div class="card">
+              
+                <a href="{{ post.get_publisher_url }}"><img src="{{ post.image.url }}" class="card-img-top" alt="..."></a>
+                <div class="card-body">
+                  <a class="nav-link text-blue" href="{{ post.get_publisher_url }}"><h3 class="text-center">{{ post.name }} </h3></a>
+                  <a href="{{ post.get_publisher_url }}"><p class="card-text">{{ post.text|safe|truncatewords:20 }}</p></a>
+                  
+    <a href="{% url 'post_edit' post.pk %}" class="btn btn-primary mt-4">EDIT POST</a>
+    <a href="{% url 'post_delete' post.pk %}" class="btn btn-primary mt-4">DELETE POST</a>
+                </div>
+              </div>
+
+        </div>
+        {% endfor %}
+        
+        
+        
+        
+       
+    </div>
+</div>
+
+
+
+<div class="mx-auto mt-4">
+<div class="text-start py-4">
+    <div class="custom-pagination">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="prev">Prevous</a>
+      {% else %}
+        <span class="prev disabled">Prevous</span>
+      {% endif %}
+      {% for i in page_obj.paginator.page_range %}
+        {% if page_obj.number == i %}
+          <a href="?page={{ i }}" class="active">{{ i }}</a>
+        {% elif i > page_obj.number|add:-3 and i < page_obj.number|add:3 %}
+          <a href="?page={{ i }}">{{ i }}</a>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="next">Next</a>
+      {% else %}
+        <span class="next disabled">Next</span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+    
+
+{% endblock content %}
+    
+    
+
+
+    

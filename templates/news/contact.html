@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags  %}
+
+
+{% block content %}
+<main id="main">
+    <section id="contact" class="contact mb-5">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+          <div class="col-lg-12 text-center mb-5">
+            <h1 class="page-title">Contact us</h1>
+          </div>
+        </div>
+
+        <div class="row gy-4">
+
+          <div class="col-md-4">
+            <div class="info-item">
+              <i class="bi bi-geo-alt"></i>
+              <h3>Address</h3>
+              <address>No 3 Nnewi Street Odoakpu Onitsha Anambra State, Nigeria</address>
+            </div>
+          </div><!-- End Info Item -->
+
+          <div class="col-md-4">
+            <div class="info-item info-item-borders">
+              <i class="bi bi-phone"></i>
+              <h3>Phone Number</h3>
+              <p><a href="tel:+155895548855">+2348030824223</a></p>
+            </div>
+          </div><!-- End Info Item -->
+
+          <div class="col-md-4">
+            <div class="info-item">
+              <i class="bi bi-envelope"></i>
+              <h3>Email</h3>
+              <p><a href="mailto:edehchetachukwu23@gmail.com">edehchetachukwu23@gmail.com</a></p>
+            </div>
+          </div><!-- End Info Item -->
+
+        </div>
+        <div class="mt-4">
+          {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message | safe }}
+    </div>
+{% endfor %}
+          </div
+        <div class="mt-16 p-16 w-75 mx-auto">
+        <form method="post" class="shadow-lg p-3 mt-8 bg-body rounded">
+          {% csrf_token %}
+          {{ contact|crispy }}
+          <div class="col-12">
+            <input type="submit" class="btn btn-primary mt-4" value="SEND MESSAGE">
+          </div>
+        </div>
+      
+      </div>
+    </form>
+    </div>
+  </div>
+      
+
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+  {% endblock content %}
+
+  

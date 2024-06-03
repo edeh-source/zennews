@@ -1,0 +1,271 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load embed_video_tags %}
+
+{% load crispy_forms_tags %}
+
+{% load social_share %}
+
+{% block content %}
+<!-- ======= Header ======= -->
+
+
+<main id="main">
+
+    <section class="single-post-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9 post-content" data-aos="fade-up">
+
+                    <!-- ======= Single Post Content ======= -->
+                    <div class="single-post">
+                        <div class="post-meta"><span class="date">{{ post.category.name }}</span> <span class="mx-1">&bullet;</span> <span>{{ post.created|timesince }} ago</span></div>
+                        <h1 class="mb-5">{{ post.name }}</h1>
+
+
+                        <figure class="my-4">
+                            <img src="{{ post.image.url }}" alt="" class="img-fluid">
+                            
+                        </figure>
+                        
+                        
+                        <div class="d-flex justify-content-center my-4 mt-4 p-4">
+                            <div class="share-icons">
+                                
+                                <a href="" class="text-dark me-3" title="Facebook"><i class="fab fa-facebook fa-lg"></i></a>
+                              <a href="#" class="text-dark me-3" title="Twitter"><i class="fab fa-twitter fa-lg"></i></a>
+                              <a href="#" class="text-dark me-3" title="Instagram"><i class="fab fa-instagram fa-lg"></i></a>
+                              <a href="#" class="text-dark me-3" title="LinkedIn"><i class="fab fa-linkedin fa-lg"></i></a>
+                              <a href="#" class="text-dark" title="Pinterest"><i class="fab fa-pinterest fa-lg"></i></a>
+                            </div>
+                          </div>
+                        <p class="mt-8 p-8">{{ post.text|safe }}</p>
+                        
+                        
+                        
+                    </div>
+                    <!-- End Single Post Content -->
+
+                    <!-- ======= Comments ======= -->
+                    <div class="comments">
+                        {% with comments.count as total_comments %}
+                        <h5 class="comment-title py-4">{{ total_comments }} comment{{ total_comments|pluralize }}</h5>
+                        {% endwith %}
+                        {% for comment in comments %}
+                        <div class="comment d-flex mb-4">
+                            <div class="flex-shrink-0">
+                                <div class="avatar avatar-sm rounded-circle">
+                                    <img class="avatar-img" src="{{ comment.user.image.url }}" alt="" class="img-fluid">
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-2 ms-sm-3">
+                                <div class="comment-meta d-flex align-items-baseline">
+                                    <h6 class="me-2">{{ comment.user.username }}</h6>
+                                    <span class="text-muted">{{ comment.created|timesince }} ago</span>
+                                </div>
+                                <div class="comment-body">
+                                    {{ comment.body|safe }}
+                                </div>
+                                {% if request.user.is_authenticated %}
+                                <a href="{% url 'comment_reply' comment.id %}" class="btn btn-primary">Reply Now</a>
+                                {% else %}
+                                <h3 class="mt-4">LOGIN NOW TO REPLY</h3>
+                                <a class="btn btn-primary mt-4" href="{% url 'login' %}">LOGIn </a>
+                                {% endif %}
+                                {% if comment.replies %}
+
+                                <div class="comment-replies bg-light p-3 mt-3 rounded">
+                                    <h6 class="comment-replies-title mb-4 text-muted text-uppercase">{{ comment.replies.count }} replies </h6>
+                                    {% for reply in comment.replies.all %}
+                                    <div class="reply d-flex mb-4">
+                                        <div class="flex-shrink-0">
+                                            <div class="avatar avatar-sm rounded-circle">
+                                                <img class="avatar-img" src="{{ reply.user.image.url }}" alt="" class="img-fluid">
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 ms-2 ms-sm-3">
+                                            <div class="reply-meta d-flex align-items-baseline">
+                                                <h6 class="mb-0 me-2">{{ reply.user.username }}</h6>
+                                                <span class="text-muted">{{ reply.created|timesince }} ago</span>
+                                            </div>
+                                            <div class="reply-body">
+                                                {{ reply.body }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% empty %}
+                                    <p>There are No replies</p>
+                                    {% if request.user.is_authenticated %}
+                                    <a href="{% url 'comment_reply' comment.id %}" class="btn btn-primary">Reply Now</a>
+                                    {% else %}
+                                    <h3 class="mt-4">LOGIN NOW TO COMMENT</h3>
+                                    <a class="btn btn-primary mt-4" href="{% url 'login' %}">LOGIN </a>
+                                    {% endif %}
+                                    {% endfor %}
+                                    
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!-- End Comments -->
+
+                    <!-- ======= Comments Form ======= -->
+                    {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message | safe }}
+    </div>
+{% endfor %}
+            {% if request.user.is_authenticated %}
+                    <form method="post">
+                        <div class="col-lg-12">
+                            <h5 class="comment-title">Leave a Comment</h5>
+                            <div class="row">
+                                {% csrf_token %}
+                              
+                              
+                              {{ form|crispy }}
+                              <div class="col-12">
+                                <input type="submit" class="btn btn-primary mt-4" value="Post comment">
+                              </div>
+                            </div>
+                          </div>
+                        <!-- End Comments Form -->
+                    </form>
+                    {% else %}
+                    <h3 class="mt-4">LOGIN NOW TO COMMENT</h3>
+                    <a class="btn btn-primary mt-4" href="{% url 'login' %}">LOGIN </a>
+                    {% endif %}
+
+                </div>
+            
+                <div class="col-md-3">
+                    <!-- ======= Sidebar ======= -->
+                    <div class="aside-block">
+
+                        <ul class="nav nav-pills custom-tab-nav mb-4" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="pills-popular-tab" data-bs-toggle="pill" data-bs-target="#pills-popular" type="button" role="tab" aria-controls="pills-popular" aria-selected="true">Popular</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-trending-tab" data-bs-toggle="pill" data-bs-target="#pills-trending" type="button" role="tab" aria-controls="pills-trending" aria-selected="false">Trending</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-latest-tab" data-bs-toggle="pill" data-bs-target="#pills-latest" type="button" role="tab" aria-controls="pills-latest" aria-selected="false">Latest</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="pills-tabContent">
+
+                            <!-- Popular -->
+                            <div class="tab-pane fade show active" id="pills-popular" role="tabpanel" aria-labelledby="pills-popular-tab">
+                                {% for posts in most_popular_posts %}
+                                <div class="post-entry-1 border-bottom">
+                                    <div class="post-meta"><span class="date">{{ posts.category.name }}</span> <span class="mx-1">&bullet;</span> <span>{{ posts.created|timesince }}</span></div>
+                                    <h2 class="mb-2"><a href="{{ posts.get_absolute_url }}">{{ posts.name }}</a></h2>
+                                    <span class="author mb-3 d-block">{{ posts.author.user }}</span>
+                                </div>
+                                {% endfor %}
+
+                                
+
+                               
+
+                                
+
+                                
+                            </div>
+                            <!-- End Popular -->
+
+                            <!-- Trending -->
+                            <div class="tab-pane fade" id="pills-trending" role="tabpanel" aria-labelledby="pills-trending-tab">
+                                {% for post_trends in  post_trend_news %}
+                                <div class="post-entry-1 border-bottom">
+                                    <div class="post-meta"><span class="date">{{ post_trends.category.name }}</span> <span class="mx-1">&bullet;</span> <span>{{ post_trends.created|timesince }}</span></div>
+                                    <h2 class="mb-2"><a href="{{ post_trends.get_absolute_url }}">{{ post_trends.name }}</a></h2>
+                                    <span class="author mb-3 d-block">{{ post_trends.author }}</span>
+                                </div>
+                                {% endfor %}
+
+                                
+
+                                
+
+                                
+                                
+
+                                
+                            </div>
+                            <!-- End Trending -->
+
+                            <!-- Latest -->
+                            <div class="tab-pane fade" id="pills-latest" role="tabpanel" aria-labelledby="pills-latest-tab">
+                                {% for latest in all_latest_post %}
+                                <div class="post-entry-1 border-bottom">
+                                    <div class="post-meta"><span class="date">{{ latest.category.name }}</span> <span class="mx-1">&bullet;</span> <span>{{ latest.created|timesince }} ago</span></div>
+                                    <h2 class="mb-2"><a href="{{ latest.get_absolute_url }}">{{ latest.name }}</a></h2>
+                                    <span class="author mb-3 d-block">{{ latest.author }}</span>
+                                </div>
+                                {% endfor %}
+
+                                
+
+                                
+
+                                
+
+                                
+
+                                
+
+                            </div>
+                            <!-- End Latest -->
+
+                        </div>
+                    </div>
+
+                    <div class="aside-block">
+                        <h3 class="aside-title">Video</h3>
+                        {% video post.videos as my_video  %}
+                        <div class="video-post">
+                            <a href="{{ my_video.url }}" class="glightbox link-video">
+                              <span class="bi-play-fill"></span>
+                              <img src="{{ my_video.thumbnail }}" alt="" class="img-fluid">
+                            </a>
+                          </div>
+                        {% endvideo %}
+                    </div>
+                    <!-- End Video -->
+
+                    <div class="aside-block">
+                        <h3 class="aside-title">Categories</h3>
+                        <ul class="aside-links list-unstyled">
+                            {% for categories in category %}
+                            <li><a href="{{ categories.get_absolute_url }}"><i class="bi bi-chevron-right"></i>{{ categories.name }}</a></li>
+                            {% endfor %}
+                            
+                        </ul>
+                    </div>
+                    <!-- End Categories -->
+
+                    <div class="aside-block">
+                        <h3 class="aside-title">Tags</h3>
+                        <ul class="aside-tags list-unstyled">
+                            {% for tag in related_tags %}
+                            <li><a href="{% url 'tag_details' tag.slug %}">{{ tag.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <!-- End Tags -->
+
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<!-- End #main -->
+{% endblock content %}
